@@ -1,5 +1,5 @@
 name: ht_email_inmemory
-description: ...
+description: An in-memory implementation of the HtEmailClient interface, suitable for testing and development environments.
 repository: https://github.com/headlines-toolkit/ht-email-inmemory
 publish_to: none
 
