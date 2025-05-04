@@ -1,62 +1,79 @@
-# Ht Email Inmemory
+# ht_email_inmemory
 
-[![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
-[![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
-[![License: MIT][license_badge]][license_link]
+![coverage: percentage](https://img.shields.io/badge/coverage-100-green)
+[![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
+[![License: PolyForm Free Trial](https://img.shields.io/badge/License-PolyForm%20Free%20Trial-blue)](https://polyformproject.org/licenses/free-trial/1.0.0)
 
-A Very Good Project created by Very Good CLI.
+An in-memory implementation of the `HtEmailClient` interface, suitable for testing and development environments where actual email sending is not required.
 
-## Installation 💻
+## Getting Started
 
-**❗ In order to start using Ht Email Inmemory you must have the [Dart SDK][dart_install_link] installed on your machine.**
+Add the dependency to your `pubspec.yaml`:
 
-Install via `dart pub add`:
-
-```sh
-dart pub add ht_email_inmemory
+```yaml
+dependencies:
+  ht_email_inmemory:
+    git:
+      url: https://github.com/headlines-toolkit/ht-email-inmemory.git
+      # Use a specific ref/tag for stability in production
+      # ref: some-tag
 ```
 
----
+Then, import the package:
 
-## Continuous Integration 🤖
-
-Ht Email Inmemory comes with a built-in [GitHub Actions workflow][github_actions_link] powered by [Very Good Workflows][very_good_workflows_link] but you can also add your preferred CI/CD solution.
-
-Out of the box, on each pull request and push, the CI `formats`, `lints`, and `tests` the code. This ensures the code remains consistent and behaves correctly as you add functionality or make changes. The project uses [Very Good Analysis][very_good_analysis_link] for a strict set of analysis options used by our team. Code coverage is enforced using the [Very Good Workflows][very_good_coverage_link].
-
----
-
-## Running Tests 🧪
-
-To run all unit tests:
-
-```sh
-dart pub global activate coverage 1.2.0
-dart test --coverage=coverage
-dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info
+```dart
+import 'package:ht_email_inmemory/ht_email_inmemory.dart';
 ```
 
-To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
+## Features
 
-```sh
-# Generate Coverage Report
-genhtml coverage/lcov.info -o coverage/
+*   Provides an `HtEmailInMemoryClient` class that implements the `HtEmailClient` interface.
+*   Simulates the `sendOtpEmail` operation without sending actual emails.
+*   Includes basic input validation (e.g., email format) and throws standard `ht_shared` exceptions (`InvalidInputException`) on failure, adhering to the client contract.
+*   Useful for dependency injection in testing or local development setups.
 
-# Open Coverage Report
-open coverage/index.html
+## Usage
+
+Instantiate the client and use it where an `HtEmailClient` is expected:
+
+```dart
+import 'package:ht_email_client/ht_email_client.dart';
+import 'package:ht_email_inmemory/ht_email_inmemory.dart';
+import 'package:ht_shared/ht_shared.dart'; // For exceptions
+
+void main() async {
+  // Instantiate the in-memory client
+  final HtEmailClient emailClient = HtEmailInMemoryClient();
+
+  const validEmail = 'test@example.com';
+  const invalidEmail = 'invalid-email';
+  const otp = '123456';
+
+  // Example: Sending an OTP (simulated)
+  try {
+    print('Attempting to send OTP to $validEmail...');
+    await emailClient.sendOtpEmail(recipientEmail: validEmail, otpCode: otp);
+    print('Successfully simulated sending OTP to $validEmail.');
+  } on HtHttpException catch (e) {
+    print('Failed to send OTP to $validEmail: $e');
+  }
+
+  // Example: Attempting with invalid input
+  try {
+    print('\nAttempting to send OTP to $invalidEmail...');
+    await emailClient.sendOtpEmail(recipientEmail: invalidEmail, otpCode: otp);
+    print('Successfully simulated sending OTP to $invalidEmail.'); // Should not reach here
+  } on InvalidInputException catch (e) {
+    // Expected exception for invalid email format
+    print('Caught expected exception for $invalidEmail: $e');
+  } on HtHttpException catch (e) {
+    // Catch other potential standard exceptions
+    print('Caught unexpected exception for $invalidEmail: $e');
+  }
+}
+
 ```
 
-[dart_install_link]: https://dart.dev/get-dart
-[github_actions_link]: https://docs.github.com/en/actions/learn-github-actions
-[license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[license_link]: https://opensource.org/licenses/MIT
-[logo_black]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_black.png#gh-light-mode-only
-[logo_white]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_white.png#gh-dark-mode-only
-[mason_link]: https://github.com/felangel/mason
-[very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
-[very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
-[very_good_coverage_link]: https://github.com/marketplace/actions/very-good-coverage
-[very_good_ventures_link]: https://verygood.ventures
-[very_good_ventures_link_light]: https://verygood.ventures#gh-light-mode-only
-[very_good_ventures_link_dark]: https://verygood.ventures#gh-dark-mode-only
-[very_good_workflows_link]: https://github.com/VeryGoodOpenSource/very_good_workflows
+## License
+
+This package is licensed under the [PolyForm Free Trial](LICENSE). Please review the terms before use.
