@@ -1,4 +1,3 @@
-import 'package:ht_email_client/ht_email_client.dart';
 import 'package:ht_email_inmemory/ht_email_inmemory.dart';
 import 'package:ht_shared/ht_shared.dart';
 import 'package:test/test.dart';

@@ -1,4 +1,4 @@
 /// An in-memory implementation of the HtEmailClient.
-library ht_email_inmemory;
+library;
 
 export 'src/ht_email_inmemory.dart';
