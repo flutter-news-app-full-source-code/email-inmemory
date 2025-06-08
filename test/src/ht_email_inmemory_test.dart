@@ -21,10 +21,7 @@ void main() {
 
       test('completes normally for valid email', () async {
         await expectLater(
-          client.sendOtpEmail(
-            recipientEmail: validEmail,
-            otpCode: otpCode,
-          ),
+          client.sendOtpEmail(recipientEmail: validEmail, otpCode: otpCode),
           completes, // Verifies the Future completes without error
         );
       });
