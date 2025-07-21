@@ -55,6 +55,7 @@ void main() async {
   // Example: Sending a transactional email (simulated)
   try {
     await emailClient.sendTransactionalEmail(
+      senderEmail: 'noreply@example.com',
       recipientEmail: 'test@example.com',
       templateId: 'd-12345',
       templateData: {'otp_code': '987654'},
