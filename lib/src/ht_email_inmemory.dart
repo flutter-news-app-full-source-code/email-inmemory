@@ -10,7 +10,7 @@ import 'package:logging/logging.dart';
 /// dispatching them. It logs the email details for debugging purposes.
 /// {@endtemplate}
 class HtEmailInMemory implements HtEmailClient {
-/// {@macro ht_email_inmemory_client}
+  /// {@macro ht_email_inmemory_client}
   HtEmailInMemory({Logger? logger})
     : _log = logger ?? Logger('HtEmailInMemory');
 
