@@ -23,11 +23,17 @@ class HtEmailInMemory implements HtEmailClient {
 
   @override
   Future<void> sendTransactionalEmail({
+    required String senderEmail,
     required String recipientEmail,
     required String templateId,
     required Map<String, dynamic> templateData,
   }) async {
     // Simulate input validation as per the interface contract.
+    if (!_emailRegExp.hasMatch(senderEmail)) {
+      throw InvalidInputException(
+        'Invalid sender email format: $senderEmail',
+      );
+    }
     if (!_emailRegExp.hasMatch(recipientEmail)) {
       throw InvalidInputException(
         'Invalid recipient email format: $recipientEmail',
@@ -37,6 +43,7 @@ class HtEmailInMemory implements HtEmailClient {
     // Log the simulated email for debugging purposes.
     _log.info('''
       --- 📧 Simulating Email Send 📧 ---
+      Sender: $senderEmail
       Recipient: $recipientEmail
       Template ID: $templateId
       Template Data: $templateData
