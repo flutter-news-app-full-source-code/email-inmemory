@@ -15,15 +15,17 @@ void main() {
     });
 
     group('sendTransactionalEmail', () {
-      const validEmail = 'test@example.com';
+      const validSenderEmail = 'sender@example.com';
+      const validRecipientEmail = 'recipient@example.com';
       const invalidEmail = 'invalid-email';
       const templateId = 'd-12345';
       const templateData = {'otp_code': '123456'};
 
-      test('completes normally for valid email', () async {
+      test('completes normally for valid emails', () async {
         await expectLater(
           client.sendTransactionalEmail(
-            recipientEmail: validEmail,
+            senderEmail: validSenderEmail,
+            recipientEmail: validRecipientEmail,
             templateId: templateId,
             templateData: templateData,
           ),
@@ -31,9 +33,23 @@ void main() {
         );
       });
 
-      test('throws InvalidInputException for invalid email', () async {
+      test('throws InvalidInputException for invalid sender email', () async {
         await expectLater(
           () => client.sendTransactionalEmail(
+            senderEmail: invalidEmail,
+            recipientEmail: validRecipientEmail,
+            templateId: templateId,
+            templateData: templateData,
+          ),
+          throwsA(isA<InvalidInputException>()),
+        );
+      });
+
+      test('throws InvalidInputException for invalid recipient email',
+          () async {
+        await expectLater(
+          () => client.sendTransactionalEmail(
+            senderEmail: validSenderEmail,
             recipientEmail: invalidEmail,
             templateId: templateId,
             templateData: templateData,
