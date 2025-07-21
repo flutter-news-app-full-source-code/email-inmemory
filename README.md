@@ -27,51 +27,43 @@ import 'package:ht_email_inmemory/ht_email_inmemory.dart';
 
 ## Features
 
-*   Provides an `HtEmailInMemoryClient` class that implements the `HtEmailClient` interface.
-*   Simulates the `sendOtpEmail` operation without sending actual emails.
-*   Includes basic input validation (e.g., email format) and throws standard `ht_shared` exceptions (`InvalidInputException`) on failure, adhering to the client contract.
-*   Useful for dependency injection in testing or local development setups.
+*   Provides an `HtEmailInMemory` class that implements the `HtEmailClient` interface.
+*   Simulates the `sendTransactionalEmail` operation without sending actual emails.
+*   Logs the simulated email details to the console, which is useful for debugging during development (e.g., viewing OTP codes).
+*   Includes basic input validation and throws standard `ht_shared` exceptions on failure.
 
 ## Usage
 
-Instantiate the client and use it where an `HtEmailClient` is expected:
+Instantiate the client and use it where an `HtEmailClient` is expected. You can optionally provide a `Logger` instance.
 
 ```dart
 import 'package:ht_email_client/ht_email_client.dart';
 import 'package:ht_email_inmemory/ht_email_inmemory.dart';
-import 'package:ht_shared/ht_shared.dart'; // For exceptions
+import 'package:ht_shared/ht_shared.dart';
+import 'package:logging/logging.dart';
 
 void main() async {
+  // Set up logging to see the output
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((record) {
+    print('${record.level.name}: ${record.time}: ${record.message}');
+  });
+
   // Instantiate the in-memory client
-  final HtEmailClient emailClient = HtEmailInMemoryClient();
+  final HtEmailClient emailClient = HtEmailInMemory();
 
-  const validEmail = 'test@example.com';
-  const invalidEmail = 'invalid-email';
-  const otp = '123456';
-
-  // Example: Sending an OTP (simulated)
+  // Example: Sending a transactional email (simulated)
   try {
-    print('Attempting to send OTP to $validEmail...');
-    await emailClient.sendOtpEmail(recipientEmail: validEmail, otpCode: otp);
-    print('Successfully simulated sending OTP to $validEmail.');
+    await emailClient.sendTransactionalEmail(
+      recipientEmail: 'test@example.com',
+      templateId: 'd-12345',
+      templateData: {'otp_code': '987654'},
+    );
+    print('Successfully simulated sending email.');
   } on HtHttpException catch (e) {
-    print('Failed to send OTP to $validEmail: $e');
-  }
-
-  // Example: Attempting with invalid input
-  try {
-    print('\nAttempting to send OTP to $invalidEmail...');
-    await emailClient.sendOtpEmail(recipientEmail: invalidEmail, otpCode: otp);
-    print('Successfully simulated sending OTP to $invalidEmail.'); // Should not reach here
-  } on InvalidInputException catch (e) {
-    // Expected exception for invalid email format
-    print('Caught expected exception for $invalidEmail: $e');
-  } on HtHttpException catch (e) {
-    // Catch other potential standard exceptions
-    print('Caught unexpected exception for $invalidEmail: $e');
+    print('Failed to send email: $e');
   }
 }
-
 ```
 
 ## License
