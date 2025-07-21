@@ -1,17 +1,20 @@
 import 'package:ht_email_client/ht_email_client.dart';
 import 'package:ht_shared/ht_shared.dart';
+import 'package:logging/logging.dart';
 
 /// {@template ht_email_inmemory_client}
 /// An in-memory implementation of [HtEmailClient] for testing or local
 /// development.
 ///
 /// This client simulates the behavior of sending emails without actually
-/// dispatching them. It primarily focuses on validating input and completing
-/// the operation successfully.
+/// dispatching them. It logs the email details for debugging purposes.
 /// {@endtemplate}
-class HtEmailInMemoryClient implements HtEmailClient {
-  /// {@macro ht_email_inmemory_client}
-  const HtEmailInMemoryClient();
+class HtEmailInMemory implements HtEmailClient {
+/// {@macro ht_email_inmemory_client}
+  HtEmailInMemory({Logger? logger})
+    : _log = logger ?? Logger('HtEmailInMemory');
+
+  final Logger _log;
 
   // Basic email regex for simple validation.
   static final _emailRegExp = RegExp(
@@ -19,9 +22,10 @@ class HtEmailInMemoryClient implements HtEmailClient {
   );
 
   @override
-  Future<void> sendOtpEmail({
+  Future<void> sendTransactionalEmail({
     required String recipientEmail,
-    required String otpCode,
+    required String templateId,
+    required Map<String, dynamic> templateData,
   }) async {
     // Simulate input validation as per the interface contract.
     if (!_emailRegExp.hasMatch(recipientEmail)) {
@@ -30,11 +34,14 @@ class HtEmailInMemoryClient implements HtEmailClient {
       );
     }
 
-    // In-memory implementation doesn't actually send an email.
-    // We can optionally log the action here for debugging purposes.
-    // print(
-    //   'Simulating OTP email send to: $recipientEmail with code: $otpCode',
-    // );
+    // Log the simulated email for debugging purposes.
+    _log.info('''
+      --- 📧 Simulating Email Send 📧 ---
+      Recipient: $recipientEmail
+      Template ID: $templateId
+      Template Data: $templateData
+      ---------------------------------
+      ''');
 
     // Simulate successful completion.
     await Future<void>.delayed(Duration.zero);
