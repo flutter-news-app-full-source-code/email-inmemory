@@ -1,13 +1,13 @@
-import 'package:ht_email_inmemory/ht_email_inmemory.dart';
-import 'package:ht_shared/ht_shared.dart';
+import 'package:core/core.dart';
+import 'package:email_inmemory/email_inmemory.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('HtEmailInMemory', () {
-    late HtEmailInMemory client;
+  group('EmailInMemory', () {
+    late EmailInMemory client;
 
     setUp(() {
-      client = HtEmailInMemory();
+      client = EmailInMemory();
     });
 
     test('can be instantiated', () {
@@ -45,18 +45,20 @@ void main() {
         );
       });
 
-      test('throws InvalidInputException for invalid recipient email',
-          () async {
-        await expectLater(
-          () => client.sendTransactionalEmail(
-            senderEmail: validSenderEmail,
-            recipientEmail: invalidEmail,
-            templateId: templateId,
-            templateData: templateData,
-          ),
-          throwsA(isA<InvalidInputException>()),
-        );
-      });
+      test(
+        'throws InvalidInputException for invalid recipient email',
+        () async {
+          await expectLater(
+            () => client.sendTransactionalEmail(
+              senderEmail: validSenderEmail,
+              recipientEmail: invalidEmail,
+              templateId: templateId,
+              templateData: templateData,
+            ),
+            throwsA(isA<InvalidInputException>()),
+          );
+        },
+      );
     });
   });
 }

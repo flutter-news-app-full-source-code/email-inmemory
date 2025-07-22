@@ -1,18 +1,17 @@
-import 'package:ht_email_client/ht_email_client.dart';
-import 'package:ht_shared/ht_shared.dart';
+import 'package:core/core.dart';
+import 'package:email_client/email_client.dart';
 import 'package:logging/logging.dart';
 
-/// {@template ht_email_inmemory_client}
-/// An in-memory implementation of [HtEmailClient] for testing or local
+/// {@template email_inmemory_client}
+/// An in-memory implementation of [EmailClient] for testing or local
 /// development.
 ///
 /// This client simulates the behavior of sending emails without actually
 /// dispatching them. It logs the email details for debugging purposes.
 /// {@endtemplate}
-class HtEmailInMemory implements HtEmailClient {
-  /// {@macro ht_email_inmemory_client}
-  HtEmailInMemory({Logger? logger})
-    : _log = logger ?? Logger('HtEmailInMemory');
+class EmailInMemory implements EmailClient {
+  /// {@macro email_inmemory_client}
+  EmailInMemory({Logger? logger}) : _log = logger ?? Logger('EmailInMemory');
 
   final Logger _log;
 
@@ -30,9 +29,7 @@ class HtEmailInMemory implements HtEmailClient {
   }) async {
     // Simulate input validation as per the interface contract.
     if (!_emailRegExp.hasMatch(senderEmail)) {
-      throw InvalidInputException(
-        'Invalid sender email format: $senderEmail',
-      );
+      throw InvalidInputException('Invalid sender email format: $senderEmail');
     }
     if (!_emailRegExp.hasMatch(recipientEmail)) {
       throw InvalidInputException(
