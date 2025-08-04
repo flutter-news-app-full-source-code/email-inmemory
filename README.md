@@ -57,6 +57,7 @@ void main() async {
     await emailClient.sendTransactionalEmail(
       senderEmail: 'noreply@example.com',
       recipientEmail: 'test@example.com',
+      subject: 'Your One-Time Code',
       templateId: 'd-12345',
       templateData: {'otp_code': '987654'},
     );
