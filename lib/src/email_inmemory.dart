@@ -24,6 +24,7 @@ class EmailInMemory implements EmailClient {
   Future<void> sendTransactionalEmail({
     required String senderEmail,
     required String recipientEmail,
+    required String subject,
     required String templateId,
     required Map<String, dynamic> templateData,
   }) async {
@@ -42,6 +43,7 @@ class EmailInMemory implements EmailClient {
       --- 📧 Simulating Email Send 📧 ---
       Sender: $senderEmail
       Recipient: $recipientEmail
+      Subject: $subject
       Template ID: $templateId
       Template Data: $templateData
       ---------------------------------
