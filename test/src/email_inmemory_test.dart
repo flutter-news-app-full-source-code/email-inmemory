@@ -18,6 +18,7 @@ void main() {
       const validSenderEmail = 'sender@example.com';
       const validRecipientEmail = 'recipient@example.com';
       const invalidEmail = 'invalid-email';
+      const subject = 'Test Subject';
       const templateId = 'd-12345';
       const templateData = {'otp_code': '123456'};
 
@@ -26,6 +27,7 @@ void main() {
           client.sendTransactionalEmail(
             senderEmail: validSenderEmail,
             recipientEmail: validRecipientEmail,
+            subject: subject,
             templateId: templateId,
             templateData: templateData,
           ),
@@ -38,6 +40,7 @@ void main() {
           () => client.sendTransactionalEmail(
             senderEmail: invalidEmail,
             recipientEmail: validRecipientEmail,
+            subject: subject,
             templateId: templateId,
             templateData: templateData,
           ),
@@ -52,6 +55,7 @@ void main() {
             () => client.sendTransactionalEmail(
               senderEmail: validSenderEmail,
               recipientEmail: invalidEmail,
+              subject: subject,
               templateId: templateId,
               templateData: templateData,
             ),
