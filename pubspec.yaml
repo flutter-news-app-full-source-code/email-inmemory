@@ -2,7 +2,7 @@ name: email_inmemory
 description: An in-memory implementation of the EmailClient interface, suitable for testing and development environments.
 repository: https://github.com/flutter-news-app-full-source-code/email-inmemory
 publish_to: none
-version
+version: 1.0.1
 
 environment:
   sdk: ^3.9.0
